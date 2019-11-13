@@ -25,7 +25,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EP.Cryptocurrency.DataSuppl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EP.Cryptocurrency.Synchronizer", "src\EP.Cryptocurrency.Synchronizer\EP.Cryptocurrency.Synchronizer.csproj", "{35D537D3-98AD-42F8-B236-946B2C10CBB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EP.Cryptocurrency.Core.Tests", "tests\EP.Cryptocurrency.Core.Tests\EP.Cryptocurrency.Core.Tests.csproj", "{8FB4D78E-9CC2-4B55-ABC8-267CDC47430A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EP.Cryptocurrency.Core.Tests", "tests\EP.Cryptocurrency.Core.Tests\EP.Cryptocurrency.Core.Tests.csproj", "{8FB4D78E-9CC2-4B55-ABC8-267CDC47430A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65A757EF-3989-4624-BB98-CE73C38843C4}"
+	ProjectSection(SolutionItems) = preProject
+		README.txt = README.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
