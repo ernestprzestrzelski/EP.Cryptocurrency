@@ -21,5 +21,32 @@ namespace EP.Cryptocurrency.Storage.Entities
         public decimal? PercentChange7d { get; set; }
         public DateTime LastUpdateTime { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Cryptocurrency cryptocurrency &&
+                   CoinMarketCapId == cryptocurrency.CoinMarketCapId &&
+                   LastUpdateTime == cryptocurrency.LastUpdateTime;
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = new HashCode();
+            hash.Add(Id);
+            hash.Add(CoinMarketCapId);
+            hash.Add(Name);
+            hash.Add(Symbol);
+            hash.Add(Rank);
+            hash.Add(CirculatingSupply);
+            hash.Add(TotalSupply);
+            hash.Add(MaxSupply);
+            hash.Add(Price);
+            hash.Add(Volume24h);
+            hash.Add(MarketCap);
+            hash.Add(PercentChange1h);
+            hash.Add(PercentChange24h);
+            hash.Add(PercentChange7d);
+            hash.Add(LastUpdateTime);
+            return hash.ToHashCode();
+        }
     }
 }

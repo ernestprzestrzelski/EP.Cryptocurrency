@@ -1,4 +1,5 @@
 ﻿using EP.Cryptocurrency.DataSupplier.Abstractions;
+using EP.Cryptocurrency.DataSupplier.Helpers;
 using EP.Cryptocurrency.DataSupplier.Implementations;
 using EP.Cryptocurrency.Repository.Abstractions;
 using EP.Cryptocurrency.Repository.Implementations;
@@ -24,11 +25,19 @@ namespace EP.Cryptocurrency.Synchronizer
 
             IConfigurationRoot configuration = builder.Build();
 
-            var serviceCollection = new ServiceCollection().AddLogging(options => options.AddConsole())
+            var serviceCollection = new ServiceCollection().AddLogging(options =>
+            {
+                options.AddConsole();
+                options.SetMinimumLevel(LogLevel.Warning);
+            })
                 .AddTransient<ICryptocurrencyDataSupplier, ExternalApiDataSupplier>()
                 .AddTransient<ICoinMarketCapService, CoinMarketCapService>()
                 .AddTransient<ICryptocurrencyMapper, CryptocurrencyMapper>()
                 .AddTransient<ICryptocurrencyRepository, CryptocurrencyRepository>()
+                .AddTransient<ICoinMarketHttpClientParametersProvider, CoinMarketHttpClientParametersProvider>()
+                .AddTransient<ICoinMarketQueryParametersProvider, CoinMarketQueryParametersProvider>()
+                .AddTransient<IMapperConstantsProvider, MapperConstantsProvider>()
+                .AddTransient<IJsonDeserializer, CoinMarketCapResponseDeserializer>()
                 .AddDbContext<Storage.CryptoDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("CryptocurrencyDatabase")));
                 serviceCollection.AddHttpClient("CoinMarketClient",
@@ -37,7 +46,7 @@ namespace EP.Cryptocurrency.Synchronizer
                     options.BaseAddress = new Uri(configuration.GetSection("CoinMarketCapApi:BaseAddress").Value);
                     options.DefaultRequestHeaders.Accept.Clear();
                     options.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    options.DefaultRequestHeaders.Add("X-CMC_PRO_API_KEY", configuration["API_KEY"]);
+                    options.DefaultRequestHeaders.Add("X-CMC_PRO_API_KEY", configuration.GetSection("CoinMarketCapApi:API_KEY").Value);
                 });
 
             var serviceProvider = serviceCollection.BuildServiceProvider();

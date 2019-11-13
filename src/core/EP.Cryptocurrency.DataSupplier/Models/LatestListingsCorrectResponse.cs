@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace EP.Cryptocurrency.DataSupplier.Models
 {
@@ -10,6 +8,6 @@ namespace EP.Cryptocurrency.DataSupplier.Models
     {
 
         [JsonProperty(PropertyName = "data")]
-        public IEnumerable<Listing> Listings { get; set; }
+        public IEnumerable<CryptocurrencyListing> Listings { get; set; }
     }
 }

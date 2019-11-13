@@ -1,71 +1,49 @@
 ﻿using EP.Cryptocurrency.DataSupplier.Abstractions;
+using EP.Cryptocurrency.DataSupplier.Helpers;
 using EP.Cryptocurrency.DataSupplier.Models;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace EP.Cryptocurrency.DataSupplier.Implementations
 {
     public class CoinMarketCapService : ICoinMarketCapService
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ICoinMarketHttpClientParametersProvider _httpClientParametersProvider;
+        private readonly IJsonDeserializer _coinMarketResponseDeserializer;
         private readonly ILogger _logger;
-        private const string CoinMarketClient = "CoinMarketClient";
-        private const string LatestListingsUrl = "v1/cryptocurrency/listings/latest";
-        private const string StartParameter = "start";
-        private const string LimitParameter = "limit";
-        private const string QuoteParameterName = "convert";
-        private const string MetadataParameterName = "aux";
-        private const string QuoteParameterValue = "USD";
-        private const string MetadataParameterValue = "cmc_rank,max_supply,circulating_supply,total_supply";
-        public CoinMarketCapService(IHttpClientFactory httpClientFactory, ILoggerFactory loggerFactory)
+        public CoinMarketCapService(IHttpClientFactory httpClientFactory, ICoinMarketHttpClientParametersProvider httpClientParametersProvider, IJsonDeserializer coinMarketResponseDeserializer, ILoggerFactory loggerFactory)
         {
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            _httpClientParametersProvider = httpClientParametersProvider ?? throw new ArgumentNullException(nameof(httpClientParametersProvider));
+            _coinMarketResponseDeserializer = coinMarketResponseDeserializer ?? throw new ArgumentNullException(nameof(coinMarketResponseDeserializer));
             var loggerFactoryInstance = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
             _logger = loggerFactoryInstance.CreateLogger<CoinMarketCapService>();
-            //_httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
-        public async Task<IEnumerable<Listing>> GetLatestListings(int start = 1, int limit = 5000)
+        public async Task<IEnumerable<CryptocurrencyListing>> GetLatestListings()
         {
-            var httpClient = _httpClientFactory.CreateClient(CoinMarketClient);
-            var query = LatestListingsUrl + BuildQueryString(start, limit);
-            HttpResponseMessage response = await httpClient.GetAsync(LatestListingsUrl+BuildQueryString(start, limit)).ConfigureAwait(false);
+            var httpClient = _httpClientFactory.CreateClient(_httpClientParametersProvider.Name);
+            var response = await httpClient.GetAsync(_httpClientParametersProvider.GetLatestListingsFullRequestUri).ConfigureAwait(false);
             var jsonData = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var jsonSerializer = new JsonSerializer(); 
-            using (var reader = new StringReader(jsonData))
-            {
-                if (!response.IsSuccessStatusCode)
-                {
-                    var deserializedStatus = (LatestListingsResponse)jsonSerializer.Deserialize(reader, typeof(LatestListingsResponse));
-                    string message = $"{CoinMarketClient} returned '{response.StatusCode}' response with external status '{deserializedStatus.Status.ErrorCode}' and message '{deserializedStatus.Status.ErrorMessage}'";
-                    _logger.LogWarning(message);
-                    return Enumerable.Empty<Listing>();
-                }
-                else
-                {
-                    var deserializedData = (LatestListingsCorrectResponse)jsonSerializer.Deserialize(reader, typeof(LatestListingsCorrectResponse));
-                    _logger.LogDebug($"{CoinMarketClient} returned correct response with data");
-                    return deserializedData.Listings;
-                }
-            }
-        }
 
-        private string BuildQueryString(int start, int limit)
-        {
-            var queryString = HttpUtility.ParseQueryString(string.Empty);
-            queryString[StartParameter] = start.ToString();
-            queryString[LimitParameter] = limit.ToString();
-            queryString[QuoteParameterName] = QuoteParameterValue;
-            queryString[MetadataParameterName] = MetadataParameterValue;
-            return $"?{queryString}";
+            if (!response.IsSuccessStatusCode)
+            {
+                var deserializedStatus = _coinMarketResponseDeserializer.Deserialize<LatestListingsResponse>(jsonData);// (LatestListingsResponse)jsonSerializer.Deserialize(reader, typeof(LatestListingsResponse));
+                string message = $"{_httpClientParametersProvider.Name} returned '{response.StatusCode}' response with external status '{deserializedStatus.Status.ErrorCode}' and message '{deserializedStatus.Status.ErrorMessage}'";
+                _logger.LogWarning(message);
+                return Enumerable.Empty<CryptocurrencyListing>();
+            }
+            else
+            {
+                var deserializedData = _coinMarketResponseDeserializer.Deserialize<LatestListingsCorrectResponse>(jsonData);// (LatestListingsCorrectResponse)jsonSerializer.Deserialize(reader, typeof(LatestListingsCorrectResponse));
+                _logger.LogInformation($"{_httpClientParametersProvider.Name} returned correct response with data");
+                return deserializedData.Listings;
+            }
         }
     }
 }

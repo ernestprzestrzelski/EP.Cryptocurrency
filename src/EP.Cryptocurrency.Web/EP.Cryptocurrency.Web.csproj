@@ -19,4 +19,8 @@
     <ProjectReference Include="..\core\EP.Cryptocurrency.DataSupplier\EP.Cryptocurrency.DataSupplier.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

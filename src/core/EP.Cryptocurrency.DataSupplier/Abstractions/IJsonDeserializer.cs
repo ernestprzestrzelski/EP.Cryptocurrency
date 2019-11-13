@@ -2,8 +2,8 @@
 
 namespace EP.Cryptocurrency.DataSupplier.Abstractions
 {
-    public interface ICryptocurrencyMapper
+    public interface IJsonDeserializer
     {
-        Storage.Entities.Cryptocurrency Map(CryptocurrencyListing value);
+        T Deserialize<T>(string data) where T : LatestListingsResponse;
     }
 }

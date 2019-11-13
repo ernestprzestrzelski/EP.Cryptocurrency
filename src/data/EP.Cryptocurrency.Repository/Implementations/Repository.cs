@@ -47,7 +47,7 @@ namespace EP.Cryptocurrency.Repository.Implementations
 
         public async Task<IQueryable<TEntity>> GetAll()
         {
-            return _dbContext.Set<TEntity>();
+            return _dbContext.Set<TEntity>().AsNoTracking();
         }
 
         public async Task Update(TEntity entity)

@@ -23,7 +23,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5327E987
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EP.Cryptocurrency.DataSupplier.Tests", "tests\EP.Cryptocurrency.DataSupplier.Tests\EP.Cryptocurrency.DataSupplier.Tests.csproj", "{D8EBBE6A-EEE4-49BA-B193-3C5C271B3D2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EP.Cryptocurrency.Synchronizer", "src\EP.Cryptocurrency.Synchronizer\EP.Cryptocurrency.Synchronizer.csproj", "{35D537D3-98AD-42F8-B236-946B2C10CBB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EP.Cryptocurrency.Synchronizer", "src\EP.Cryptocurrency.Synchronizer\EP.Cryptocurrency.Synchronizer.csproj", "{35D537D3-98AD-42F8-B236-946B2C10CBB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EP.Cryptocurrency.Core.Tests", "tests\EP.Cryptocurrency.Core.Tests\EP.Cryptocurrency.Core.Tests.csproj", "{8FB4D78E-9CC2-4B55-ABC8-267CDC47430A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{35D537D3-98AD-42F8-B236-946B2C10CBB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35D537D3-98AD-42F8-B236-946B2C10CBB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35D537D3-98AD-42F8-B236-946B2C10CBB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FB4D78E-9CC2-4B55-ABC8-267CDC47430A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FB4D78E-9CC2-4B55-ABC8-267CDC47430A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FB4D78E-9CC2-4B55-ABC8-267CDC47430A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FB4D78E-9CC2-4B55-ABC8-267CDC47430A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{CA6FCC23-08A1-41EB-A59D-BB8C54251445} = {5F03EFC1-0AC6-41EC-8F5B-916A5013714E}
 		{D8EBBE6A-EEE4-49BA-B193-3C5C271B3D2D} = {5327E987-C94D-452A-8C78-36D1C8CD2B7E}
 		{35D537D3-98AD-42F8-B236-946B2C10CBB4} = {D5877806-4E2E-4B89-961D-8D07204C8D12}
+		{8FB4D78E-9CC2-4B55-ABC8-267CDC47430A} = {5327E987-C94D-452A-8C78-36D1C8CD2B7E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0068289C-D305-4095-9B75-DC2BD7A6E1A0}
