@@ -42,12 +42,12 @@ namespace EP.Cryptocurrency.Repository.Implementations
 
         public async Task<IQueryable<TEntity>> Get(Expression<Func<TEntity, bool>> predicate)
         {
-            return _dbContext.Set<TEntity>().Where(predicate);
+            return await Task.Run(() => _dbContext.Set<TEntity>().Where(predicate)).ConfigureAwait(false);
         }
 
         public async Task<IQueryable<TEntity>> GetAll()
         {
-            return _dbContext.Set<TEntity>().AsNoTracking();
+            return await Task.Run(() => _dbContext.Set<TEntity>().AsNoTracking()).ConfigureAwait(false);
         }
 
         public async Task Update(TEntity entity)
